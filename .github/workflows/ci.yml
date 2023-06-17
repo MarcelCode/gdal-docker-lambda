@@ -1,5 +1,8 @@
 name: CI
 
+permissions:
+  packages: write
+
 on:
   push:
     paths:
@@ -48,7 +51,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.PACKAGE_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -129,4 +132,4 @@ jobs:
         with:
           file-path: layer.json
           commit-msg: Update layer [skip ci]
-          github-token: ${{ secrets.PACKAGE_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
