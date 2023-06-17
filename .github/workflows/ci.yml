@@ -3,15 +3,15 @@ name: CI
 on:
   push:
     paths:
-    - 'dockerfiles/**'
-    - 'scripts/deploy.py'
-    - 'scripts/create-layer.sh'
-    - 'tests/*'
-    - '.github/workflows/ci.yml'
+      - 'dockerfiles/**'
+      - 'scripts/deploy.py'
+      - 'scripts/create-layer.sh'
+      - 'tests/*'
+      - '.github/workflows/ci.yml'
     branches:
-    - master
+      - master
     tags:
-    - '*'
+      - '*'
   pull_request:
 
 jobs:
@@ -20,9 +20,13 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        gdal-version: [3.6]
+        gdal-version: [ 3.6 ]
     steps:
       - uses: actions/checkout@v3
+
+      - name: Lowercase Repository Owner
+        run: |
+          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -52,7 +56,7 @@ jobs:
           aws-region: eu-central-1
 
       - name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           platforms: linux/amd64
           context: .
@@ -72,7 +76,7 @@ jobs:
             /local/tests/tests.sh
 
       - name: Publish docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         if: github.ref == 'refs/heads/master'
         with:
           platforms: linux/amd64
@@ -94,7 +98,7 @@ jobs:
           python scripts/deploy.py ${{ matrix.gdal-version }} --deploy
 
   update-layer:
-    needs: [build]
+    needs: [ build ]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -121,6 +125,6 @@ jobs:
       - name: Update resources
         uses: test-room-7/action-update-file@v1
         with:
-            file-path: layer.json
-            commit-msg: Update layer [skip ci]
-            github-token: ${{ secrets.GITHUB_TOKEN }}
+          file-path: layer.json
+          commit-msg: Update layer [skip ci]
+          github-token: ${{ secrets.GITHUB_TOKEN }}
