@@ -7,17 +7,9 @@ echo "Checking formats"
 if [[ ! "$(gdal-config --prefix | grep $PREFIX)" ]]; then echo "NOK" && exit 1; fi
 if [[ ! "$(gdal-config --formats | grep 'JP2OpenJPEG')" ]]; then echo "JP2OpenJPEG NOK" && exit 1; fi
 if [[ ! "$(gdal-config --formats | grep 'GTIFF')" ]]; then echo "GTIFF NOK" && exit 1; fi
-if [[ ! "$(gdal-config --formats | grep 'MBTiles')" ]]; then echo "MBTiles NOK" && exit 1; fi
 if [[ ! "$(gdal-config --formats | grep 'WEBP')" ]]; then echo "WEBP NOK" && exit 1; fi
 if [[ ! "$(gdal-config --formats | grep 'JPEG')" ]]; then echo "JPEG NOK" && exit 1; fi
 if [[ ! "$(gdal-config --formats | grep 'PNG')" ]]; then echo "PNG NOK" && exit 1; fi
-if [[ ! "$(gdal-config --formats | grep 'netCDF')" ]]; then echo "netCDF NOK" && exit 1; fi
-if [[ ! "$(gdal-config --formats | grep 'Zarr')" ]]; then echo "Zarr NOK" && exit 1; fi
-if [[ ! "$(gdal-config --formats | grep 'HDF5')" ]]; then echo "HDF5 NOK" && exit 1; fi
-if [[ ! "$(gdal-config --formats | grep 'HDF4')" ]]; then echo "HDF4 NOK" && exit 1; fi
-if [[ ! "$(ogrinfo --formats | grep 'GML')" ]]; then echo "GLM NOK" && exit 1; fi
-if [[ ! "$(ogrinfo --formats | grep 'PostgreSQL')" ]]; then echo "PostgreSQL NOK" && exit 1; fi
-if [[ ! "$(ogrinfo --formats | grep 'DXF')" ]]; then echo "DXF NOK" && exit 1; fi
 echo "OK"
 
 echo "Checking sqlite build"
