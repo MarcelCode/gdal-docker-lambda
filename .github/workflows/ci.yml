@@ -64,7 +64,7 @@ jobs:
           context: .
           load: true
           file: dockerfiles/Dockerfile.gdal${{ matrix.gdal-version }}
-          tags: ghcr.io/$OWNER_LC/lambda-gdal:${{ matrix.gdal-version }}
+          tags: ghcr.io/${{ env.OWNER_LC }}/lambda-gdal:${{ matrix.gdal-version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -74,7 +74,7 @@ jobs:
             --platform=linux/amd64 \
             --entrypoint bash \
             -v ${{ github.workspace }}:/local \
-            --rm ghcr.io/$OWNER_LC/lambda-gdal:${{ matrix.gdal-version }} \
+            --rm ghcr.io/${{ env.OWNER_LC }}/lambda-gdal:${{ matrix.gdal-version }} \
             /local/tests/tests.sh
 
       - name: Publish docker image
@@ -86,7 +86,7 @@ jobs:
           file: dockerfiles/Dockerfile.gdal${{ matrix.gdal-version }}
           push: true
           cache-from: type=gha
-          tags: ghcr.io/$OWNER_LC/lambda-gdal:${{ matrix.gdal-version }}
+          tags: ghcr.io/${{ env.OWNER_LC }}/lambda-gdal:${{ matrix.gdal-version }}
 
       - name: Build and Deploy layers
         if: github.ref == 'refs/heads/master'
@@ -95,7 +95,7 @@ jobs:
             --platform=linux/amd64 \
             --entrypoint bash \
             -v ${{ github.workspace }}:/local \
-            --rm ghcr.io/$OWNER_LC/lambda-gdal:${{ matrix.gdal-version }} \
+            --rm ghcr.io/${{ env.OWNER_LC }}/lambda-gdal:${{ matrix.gdal-version }} \
             /local/scripts/create-layer.sh
           python scripts/deploy.py ${{ matrix.gdal-version }} --deploy
 
