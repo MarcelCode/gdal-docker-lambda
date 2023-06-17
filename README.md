@@ -1,7 +1,8 @@
 # Adaption to only support COG handling
 
 I minimized the docker build and removed drivers which are not needed. Our use case ist to create a minimal package size
-for warping a cloud optimized geotiff inside aws lambda. 
+for warping a cloud optimized geotiff inside aws lambda. This repository will only focus on Amazon Linux 2 Base and
+will not deploy the runtime docker. 
 
 
 # GDAL based docker image made for AWS Lambda

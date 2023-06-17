@@ -22,12 +22,12 @@ jobs:
       matrix:
         gdal-version: [3.6]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
 
       - name: Install dependencies
         run: |
@@ -49,7 +49,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: eu-central-1
 
       - name: Build
         uses: docker/build-push-action@v3
@@ -93,31 +93,17 @@ jobs:
             /local/scripts/create-layer.sh
           python scripts/deploy.py ${{ matrix.gdal-version }} --deploy
 
-      - name: Build Runtime and Push
-        if: github.ref == 'refs/heads/master'
-        run: |
-          runtimes='3.9 3.10 3.11-preview'
-          for runtime in ${runtimes}; do
-            docker build \
-              --platform=linux/amd64 \
-              --build-arg GDAL_VERSION=${{ matrix.gdal-version }} \
-              --build-arg RUNTIME_VERSION=${runtime} \
-              -f dockerfiles/runtimes/python \
-              -t ghcr.io/${{ github.repository_owner }}/lambda-gdal:${{ matrix.gdal-version }}-python${runtime} .
-            docker push ghcr.io/${{ github.repository_owner }}/lambda-gdal:${{ matrix.gdal-version }}-python${runtime}
-          done
-
   update-layer:
     needs: [build]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
 
       - uses: actions/setup-node@v1
 
@@ -126,7 +112,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: eu-central-1
 
       - name: List layers
         run: |
