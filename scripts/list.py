@@ -1,10 +1,12 @@
 
 import json
 from boto3.session import Session as boto3_session
+from pprint import pprint
 
 AWS_REGIONS = [
     "eu-central-1",
     "eu-west-1",
+    "us-west-2"
 ]
 layers = [
     "gdal36",
@@ -28,7 +30,7 @@ def main():
             ))
         results.append(res)
 
-    print(json.dumps(results))
+    pprint(results)
 
 
 if __name__ == '__main__':

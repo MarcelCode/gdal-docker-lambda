@@ -8,6 +8,7 @@ from botocore.client import Config
 AWS_REGIONS = [
     "eu-central-1",
     "eu-west-1",
+    "us-west-2"
 ]
 
 
